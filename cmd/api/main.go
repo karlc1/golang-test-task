@@ -52,7 +52,7 @@ func main() {
 			return
 		}
 
-		c.JSON(200, "worked3")
+		c.Status(200)
 	})
 
 	r.Run(fmt.Sprintf(":%d", env.ApiPort))
