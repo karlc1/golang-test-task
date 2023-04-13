@@ -4,6 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
+	"os"
+	"os/signal"
+	"syscall"
 	"twitch_chat_analysis/internal/cache"
 	"twitch_chat_analysis/internal/domain"
 	"twitch_chat_analysis/internal/environment"
@@ -38,6 +42,16 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("failed to start consuming from queue: %v", err))
 	}
+
+	c := make(chan os.Signal)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-c
+		if err := queueClient.Disconnect(); err != nil {
+			log.Fatal(err)
+		}
+		os.Exit(0)
+	}()
 
 	for d := range deliveries {
 

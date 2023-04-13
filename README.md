@@ -37,6 +37,5 @@ Things that I would like to add but did not have time includes:
 - integration tests
 - automatic reconnect on connection loss
 - structured logging
-- graceful exit/closing of open resources
 - separate transport layer of APIs from main modules
 - better error handling and verbose http responses/statuses
