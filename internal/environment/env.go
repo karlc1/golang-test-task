@@ -15,6 +15,7 @@ type Environment struct {
 	RMQexchange  string
 	RedisHost    string
 	RedisPort    int
+	ApiPort      int
 }
 
 func MustGetApiEnv() Environment {
@@ -24,6 +25,7 @@ func MustGetApiEnv() Environment {
 		RMQpassword:  mustGetString("RMQ_PASS"),
 		RMQhost:      mustGetString("RMQ_HOST"),
 		RMQport:      mustGetInt("RMQ_PORT"),
+		ApiPort: mustGetInt("API_PORT"),
 	}
 }
 
@@ -35,8 +37,16 @@ func MustGetWorkerEnv() Environment {
 		RMQhost:      mustGetString("RMQ_HOST"),
 		RMQport:      mustGetInt("RMQ_PORT"),
 		RMQexchange:  mustGetString("RMQ_EXCHANGE"),
+		RedisHost:    mustGetString("REDIS_HOST"),
+		RedisPort:    mustGetInt("REDIS_PORT"),
+	}
+}
+
+func MustGetReporterEnv() Environment {
+	return Environment{
 		RedisHost: mustGetString("REDIS_HOST"),
 		RedisPort: mustGetInt("REDIS_PORT"),
+		ApiPort: mustGetInt("API_PORT"),
 	}
 }
 

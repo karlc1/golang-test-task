@@ -43,6 +43,28 @@ services:
       - RMQ_PASS=password
       - RMQ_HOST=rabbitmq
       - RMQ_PORT=5672
+      - API_PORT=8080
+
+  reporter:
+    build:
+      dockerfile: cmd/reporter/Dockerfile
+      context: .
+    ports:
+      - 8081:8080
+    networks:
+        - bridge_net
+        - redis_net
+    depends_on:
+      - redis
+    environment:
+    #   - RMQ_QUEUE_NAME=messageQueue
+    #   - RMQ_USER=user
+    #   - RMQ_PASS=password
+    #   - RMQ_HOST=rabbitmq
+      # - RMQ_PORT=5672
+      - API_PORT=8080
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
 
   worker:
     build:
@@ -63,6 +85,20 @@ services:
       - RMQ_EXCHANGE="work_exchange"
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+
+  # reporting:
+  #   build:
+  #     dockerfile: cmd/reporting/Dockerfile
+  #     context: .
+  #   ports:
+  #     - 8081:8081
+  #   networks:
+  #       - redis_net
+  #       - bridge_net
+  #   environment:
+  #     - REDIS_HOST=redis
+  #     - REDIS_PORT=6379
+  #     - API_PORT=8081
 
 networks:
   bridge_net:

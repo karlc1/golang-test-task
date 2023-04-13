@@ -6,7 +6,7 @@ COPY . .
 
 RUN go mod download
 
-RUN go build -o server ./cmd/api/main.go
+RUN go build -o server ./cmd/reporter/main.go
 
 FROM debian:buster-slim
 RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \

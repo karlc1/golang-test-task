@@ -36,7 +36,7 @@ func main() {
 
 	r := gin.Default()
 
-	r.GET("/message", func(c *gin.Context) {
+	r.POST("/message", func(c *gin.Context) {
 
 		input := domain.Message{}
 		err := c.BindJSON(&input)
@@ -45,7 +45,7 @@ func main() {
 			return
 		}
 
-		fmt.Printf("RECEIVED MESSAGE: %#+v", input)
+		fmt.Printf("received message:: %#+v", input)
 
 		if err := queueClient.PublishMessage(input); err != nil {
 			c.AbortWithError(http.StatusInternalServerError, err)
@@ -55,7 +55,7 @@ func main() {
 		c.JSON(200, "worked3")
 	})
 
-	r.Run()
+	r.Run(fmt.Sprintf(":%d", env.ApiPort))
 }
 
 // Here we set the way error messages are displayed in the terminal.
