@@ -7,8 +7,6 @@ services:
     container_name: rabbitmq
     hostname: rabbitmq
     ports:
-      # - "7000:15672"
-      # - "7001:5672"
       - "15672:15672"
       - "5672:5672"
     environment:
@@ -57,11 +55,6 @@ services:
     depends_on:
       - redis
     environment:
-    #   - RMQ_QUEUE_NAME=messageQueue
-    #   - RMQ_USER=user
-    #   - RMQ_PASS=password
-    #   - RMQ_HOST=rabbitmq
-      # - RMQ_PORT=5672
       - API_PORT=8080
       - REDIS_HOST=redis
       - REDIS_PORT=6379
@@ -85,20 +78,6 @@ services:
       - RMQ_EXCHANGE="work_exchange"
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-
-  # reporting:
-  #   build:
-  #     dockerfile: cmd/reporting/Dockerfile
-  #     context: .
-  #   ports:
-  #     - 8081:8081
-  #   networks:
-  #       - redis_net
-  #       - bridge_net
-  #   environment:
-  #     - REDIS_HOST=redis
-  #     - REDIS_PORT=6379
-  #     - API_PORT=8081
 
 networks:
   bridge_net:
