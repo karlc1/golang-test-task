@@ -37,7 +37,7 @@ func (c *Client) List(ctx context.Context, sender, receiver string) ([]domain.Me
 		return nil, err
 	}
 
-	ret := make([]domain.Message, len(res))
+	ret := []domain.Message{}
 	for _, s := range res {
 		m := domain.Message{}
 		if err := json.Unmarshal([]byte(s), &m); err != nil {
