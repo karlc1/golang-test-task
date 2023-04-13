@@ -12,15 +12,31 @@ type Environment struct {
 	RMQpassword  string
 	RMQhost      string
 	RMQport      int
+	RMQexchange  string
+	RedisHost    string
+	RedisPort    int
 }
 
-func MustGetEnv() Environment {
+func MustGetApiEnv() Environment {
 	return Environment{
 		RMQqueueName: mustGetString("RMQ_QUEUE_NAME"),
 		RMQuser:      mustGetString("RMQ_USER"),
 		RMQpassword:  mustGetString("RMQ_PASS"),
 		RMQhost:      mustGetString("RMQ_HOST"),
 		RMQport:      mustGetInt("RMQ_PORT"),
+	}
+}
+
+func MustGetWorkerEnv() Environment {
+	return Environment{
+		RMQqueueName: mustGetString("RMQ_QUEUE_NAME"),
+		RMQuser:      mustGetString("RMQ_USER"),
+		RMQpassword:  mustGetString("RMQ_PASS"),
+		RMQhost:      mustGetString("RMQ_HOST"),
+		RMQport:      mustGetInt("RMQ_PORT"),
+		RMQexchange:  mustGetString("RMQ_EXCHANGE"),
+		RedisHost: mustGetString("REDIS_HOST"),
+		RedisPort: mustGetInt("REDIS_PORT"),
 	}
 }
 

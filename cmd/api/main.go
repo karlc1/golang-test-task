@@ -16,9 +16,9 @@ import (
 
 func main() {
 
-	env := environment.MustGetEnv()
+	env := environment.MustGetApiEnv()
 
-	queueClient := queue.New(
+	queueClient := queue.NewProducer(
 		env.RMQqueueName,
 		env.RMQuser,
 		env.RMQpassword,

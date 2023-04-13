@@ -17,13 +17,14 @@ services:
     networks:
         - bridge_net
         - rabbit_net
-    # network_mode: host
 
   redis:
     image: redis:5-alpine
     ports:
       - 6379:6379
     restart: always
+    networks:
+        - redis_net
 
   api:
     build:
@@ -43,19 +44,28 @@ services:
       - RMQ_HOST=rabbitmq
       - RMQ_PORT=5672
 
-  # rabbitmq2:
-  #     image: rabbitmq:3-management
-  #     container_name: 'rabbitmq2'
-  #     ports:
-  #         - 5672:5672
-  #         - 15672:15672
-  #     # volumes:
-  #     #     - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-  #     #     - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
-  #     networks:
-  #         - bridge_net
+  worker:
+    build:
+      dockerfile: cmd/worker/Dockerfile
+      context: .
+    networks:
+        - rabbit_net
+        - redis_net
+    depends_on:
+      - rabbitmq
+      - redis
+    environment:
+      - RMQ_QUEUE_NAME=messageQueue
+      - RMQ_USER=user
+      - RMQ_PASS=password
+      - RMQ_HOST=rabbitmq
+      - RMQ_PORT=5672
+      - RMQ_EXCHANGE="work_exchange"
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
 
 networks:
   bridge_net:
     driver: bridge
   rabbit_net:
+  redis_net:
